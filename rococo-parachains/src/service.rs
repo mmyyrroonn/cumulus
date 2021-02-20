@@ -24,7 +24,7 @@ use cumulus_client_service::{
 use cumulus_primitives_core::ParaId;
 use parachain_runtime::RuntimeApi;
 use polkadot_primitives::v0::CollatorPair;
-use rococo_parachain_primitives::Block;
+use crust_parachain_primitives::Block;
 use sc_executor::native_executor_instance;
 pub use sc_executor::NativeExecutor;
 use sc_service::{Configuration, PartialComponents, Role, TFullBackend, TFullClient, TaskManager};

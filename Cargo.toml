@@ -13,10 +13,6 @@ members = [
 	"rococo-parachains/pallets/parachain-info",
 	"rococo-parachains/primitives",
 	"rococo-parachains/runtime",
-	"test/runtime",
-	"test/client",
-	"test/service",
-	"test/relay-sproof-builder",
 ]
 
 [profile.release]

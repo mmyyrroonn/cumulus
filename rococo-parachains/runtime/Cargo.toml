@@ -1,5 +1,5 @@
 [package]
-name = 'cumulus-test-parachain-runtime'
+name = 'crust-parachain-runtime'
 version = '0.1.0'
 authors = ["Parity Technologies <admin@parity.io>"]
 edition = '2018'
@@ -9,7 +9,7 @@ serde = { version = "1.0.101", optional = true, features = ["derive"] }
 codec = { package = "parity-scale-codec", version = "2.0.0", default-features = false, features = ["derive"] }
 
 parachain-info = { path = "../pallets/parachain-info", default-features = false }
-rococo-parachain-primitives = { path = "../primitives", default-features = false }
+crust-parachain-primitives = { path = "../primitives", default-features = false }
 
 # Substrate dependencies
 sp-std = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "rococo-v1" }
@@ -72,7 +72,7 @@ std = [
 	"pallet-sudo/std",
 	"pallet-transaction-payment/std",
 	"parachain-info/std",
-	"rococo-parachain-primitives/std",
+	"crust-parachain-primitives/std",
 	"cumulus-pallet-parachain-system/std",
 	"cumulus-pallet-xcm-handler/std",
 	"cumulus-primitives-core/std",
