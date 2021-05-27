@@ -375,10 +375,20 @@ where
 
 	fn new_best_heads(&self, para_id: ParaId) -> Self::HeadStream {
 		let relay_chain = self.clone();
+		tracing::debug!(
+			target: "cumulus-consensus",
+			para_id = ?para_id,
+			"ParaId is.",
+		);
 
 		self.import_notification_stream()
 			.filter_map(move |n| {
 				future::ready(if n.is_new_best {
+					tracing::debug!(
+						target: "cumulus-consensus",
+						notification = ?n,
+						"Notification Info",
+					);
 					relay_chain
 						.parachain_head_at(&BlockId::hash(n.hash), para_id)
 						.ok()
