@@ -211,10 +211,17 @@ where
 		relay_parent: PHash,
 		validation_data: &PersistedValidationData,
 	) -> Option<ParachainCandidate<B>> {
+		tracing::debug!(
+			target: LOG_TARGET,
+			"1",
+		);
 		let (inherent_data, inherent_data_providers) = self
 			.inherent_data(parent.hash(), validation_data, relay_parent)
 			.await?;
-
+		tracing::debug!(
+			target: LOG_TARGET,
+			"2",
+		);
 		let info = SlotInfo::new(
 			inherent_data_providers.slot(),
 			inherent_data_providers.timestamp(),
@@ -229,7 +236,10 @@ where
 		);
 
 		let res = self.aura_worker.lock().await.on_slot(info).await?;
-
+		tracing::debug!(
+			target: LOG_TARGET,
+			"3",
+		);
 		Some(ParachainCandidate {
 			block: res.block,
 			proof: res.storage_proof,
