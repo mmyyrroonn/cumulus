@@ -5,6 +5,8 @@ use sc_service::ChainType;
 use serde::{Deserialize, Serialize};
 use sp_core::{sr25519, Pair, Public};
 use sp_runtime::traits::{IdentifyAccount, Verify};
+use sp_core::crypto::UncheckedInto;
+use hex_literal::hex;
 
 /// Specialized `ChainSpec` for the normal parachain runtime.
 pub type ChainSpec =
@@ -177,6 +179,68 @@ pub fn local_testnet_config() -> ChainSpec {
 	)
 }
 
+pub fn temp_crust_shadow_config() -> ChainSpec {
+	// Give your base currency a unit name and decimal places
+	let mut properties = sc_chain_spec::Properties::new();
+	properties.insert("tokenSymbol".into(), "CRUT".into());
+	properties.insert("tokenDecimals".into(), 12.into());
+	properties.insert("ss58Format".into(), 66.into());
+
+	ChainSpec::from_genesis(
+		// Name
+		"Crust Shadow Temp",
+		// ID
+		"crust_shadow_temp",
+		ChainType::Local,
+		move || {
+			testnet_genesis(
+				// initial collators.
+				vec![
+					(
+						hex!("0a38d76ecfbd4b13077669bb9c9ebaaf0847723426f809d20a67c62f2bebc75a").into(),
+						hex!("0a38d76ecfbd4b13077669bb9c9ebaaf0847723426f809d20a67c62f2bebc75a").unchecked_into()
+					),
+					(
+						hex!("7e5040d49782960b2a15e7cb4106f730ca7a997a28facff6e2978aeda32fc348").into(),
+						hex!("7e5040d49782960b2a15e7cb4106f730ca7a997a28facff6e2978aeda32fc348").unchecked_into()
+					),
+					(
+						hex!("869f4e66b0b16f6de5f3cc217b99ada20f766a7d26868dda3020d29e9e80e97c").into(),
+						hex!("869f4e66b0b16f6de5f3cc217b99ada20f766a7d26868dda3020d29e9e80e97c").unchecked_into()
+					),
+					(
+						hex!("7a6a226782a4cf5712f914bbf3cc64304f3c9af58b82f1dd2a4f09c48278ae65").into(),
+						hex!("7a6a226782a4cf5712f914bbf3cc64304f3c9af58b82f1dd2a4f09c48278ae65").unchecked_into()
+					),
+				],
+				vec![
+					hex!["f8da9f475ca917478d54d8971c8838ab109a8e4bb85566e753deceec1044ef45"].into(),
+					hex!["0a38d76ecfbd4b13077669bb9c9ebaaf0847723426f809d20a67c62f2bebc75a"].into(),
+					hex!["7e5040d49782960b2a15e7cb4106f730ca7a997a28facff6e2978aeda32fc348"].into(),
+					hex!["869f4e66b0b16f6de5f3cc217b99ada20f766a7d26868dda3020d29e9e80e97c"].into(),
+					hex!["7a6a226782a4cf5712f914bbf3cc64304f3c9af58b82f1dd2a4f09c48278ae65"].into()
+				],
+				2225.into(),
+			)
+		},
+		// Bootnodes
+		Vec::new(),
+		// Telemetry
+		None,
+		// Protocol ID
+		Some("crust-shadow-temp"),
+		// Fork ID
+		None,
+		// Properties
+		Some(properties),
+		// Extensions
+		Extensions {
+			relay_chain: "rococo-local".into(), // You MUST set this to the correct network!
+			para_id: 2225,
+		},
+	)
+}
+
 fn testnet_genesis(
 	invulnerables: Vec<(AccountId, AuraId)>,
 	endowed_accounts: Vec<AccountId>,
@@ -188,6 +252,7 @@ fn testnet_genesis(
 				.expect("WASM binary was not build, please build it!")
 				.to_vec(),
 		},
+		sudo: parachain_template_runtime::SudoConfig { key: Some(endowed_accounts[0].clone()) },
 		balances: parachain_template_runtime::BalancesConfig {
 			balances: endowed_accounts.iter().cloned().map(|k| (k, 1 << 60)).collect(),
 		},
